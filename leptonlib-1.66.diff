@@ -1,0 +1,84 @@
+# Add CFLAGS and fix installation path
+diff -N -r -U 3 leptonlib-1.66-orig/prog/makefile leptonlib-1.66/prog/makefile
+--- leptonlib-1.66-orig/prog/makefile	2010-08-08 04:32:12.000000000 +0300
++++ leptonlib-1.66/prog/makefile	2010-10-02 21:13:43.000000000 +0300
+@@ -89,10 +89,10 @@
+ else
+     ifdef  DEBUG
+ 	LIB_DIR =	$(LIB_DEBUG_DIR)
+-	OPTIMIZE =	-g
++	OPTIMIZE =	-g $(CFLAGS)
+     else
+ 	LIB_DIR =	$(LIB_NODEBUG_DIR)
+-	OPTIMIZE =	-O2
++	OPTIMIZE =	-O2 $(CFLAGS)
+     endif
+ endif
+ 
+@@ -832,9 +832,9 @@
+ ###########################################################
+  
+ install:
+-	mkdir -p $(DESTDIR)/usr/bin/leptonica
++	mkdir -p $(DESTDIR)/usr/bin
+ 	-@ for file in $(SRC:%.c=%) ; do \
+-		install $$file $(DESTDIR)/usr/bin/leptonica; \
++		install $$file $(DESTDIR)/usr/bin; \
+ 	done ;
+ 
+ ###########################################################
+# Build only shared library
+diff -N -r -U 3 leptonlib-1.66-orig/src/Makefile.in leptonlib-1.66/src/Makefile.in
+--- leptonlib-1.66-orig/src/Makefile.in	2010-08-03 02:12:51.000000000 +0300
++++ leptonlib-1.66/src/Makefile.in	2010-10-02 21:13:01.000000000 +0300
+@@ -142,7 +142,7 @@
+ AWK = @AWK@
+ CC = @CC@
+ CCDEPMODE = @CCDEPMODE@
+-CFLAGS = -O2
++CFLAGS = @CFLAGS@
+ CPP = @CPP@
+ CPPFLAGS = @CPPFLAGS@
+ CXX = @CXX@
+@@ -245,7 +245,7 @@
+ MAKE = make -f Makefile
+ AM_CFLAGS = -D_BSD_SOURCE -DANSI -fPIC
+ AM_CPPFLAGS = $(ENDIANNESS)
+-lib_LIBRARIES = liblept.a
++lib_LIBRARIES = liblept.so
+ liblept_a_SOURCES = adaptmap.c \
+  affine.c affinecompose.c \
+  arithlow.c arrayaccess.c \
+@@ -364,14 +364,14 @@
+ 	    $(libLIBRARIES_INSTALL) "$$p" "$(DESTDIR)$(libdir)/$$f"; \
+ 	  else :; fi; \
+ 	done
+-	@$(POST_INSTALL)
+-	@list='$(lib_LIBRARIES)'; for p in $$list; do \
+-	  if test -f $$p; then \
+-	    p=$(am__strip_dir) \
+-	    echo " $(RANLIB) '$(DESTDIR)$(libdir)/$$p'"; \
+-	    $(RANLIB) "$(DESTDIR)$(libdir)/$$p"; \
+-	  else :; fi; \
+-	done
++#	@$(POST_INSTALL)
++#	@list='$(lib_LIBRARIES)'; for p in $$list; do \
++#	  if test -f $$p; then \
++#	    p=$(am__strip_dir) \
++#	    echo " $(RANLIB) '$(DESTDIR)$(libdir)/$$p'"; \
++#	    $(RANLIB) "$(DESTDIR)$(libdir)/$$p"; \
++#	  else :; fi; \
++#	done
+ 
+ uninstall-libLIBRARIES:
+ 	@$(NORMAL_UNINSTALL)
+@@ -388,6 +388,9 @@
+ 	$(liblept_a_AR) liblept.a $(liblept_a_OBJECTS) $(liblept_a_LIBADD)
+ 	$(RANLIB) liblept.a
+ 
++liblept.so: $(liblept_a_OBJECTS) $(liblept_a_DEPENDENCIES) 
++	$(CC) -shared -o $@ $(liblept_a_OBJECTS) -lgif -ltiff -ljpeg -lpng -lm -Wl,-soname -Wl,$@
++
+ mostlyclean-compile:
+ 	-rm -f *.$(OBJEXT)
+ 

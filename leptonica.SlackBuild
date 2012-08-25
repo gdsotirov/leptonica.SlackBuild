@@ -1,17 +1,29 @@
 #!/bin/sh
 #
-# Slackware build script for Leptonica Library
-# Written by Georgi D. Sotirov <gdsotirov@dir.bg>
-# Visit SlackPack at http://sotirov-bg.net/slackpack/
+# Slackware build script for Leptonica
+# Copyright (C) 2010, 2012 Georgi D. Sotirov <gdsotirov@dir.bg>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# 
+# $Id: leptonica.SlackBuild,v 1.1 2012/08/25 10:27:08 gsotirov Exp $
 #
 
-. ../slack-package.conf
+. ../../slack-package.conf
 
-NAME=leptonlib
-LIBNAME=liblept.so
-VERSION=1.66
-VER_MAJ=1
-VER_MIN=66
+NAME=leptonica
+VERSION=1.69
 ARCH=${ARCH:-i486}
 BUILD=${BUILD:-1}
 
@@ -37,35 +49,25 @@ mkdir -p $PKG
 
 # Extract the sources
 cd $TMP
-tar -xvf $CWD/$NAME-$VERSION.tar.gz || exit 3
+tar -xvf $CWD/$NAME-$VERSION.tar.?z* || exit 3
 cd $SRC
 fix_source
 
 # Apply patches
-patch -p1 -b -z.orig < $CWD/$NAME-$VERSION.diff || exit 4
-patch -p1 -b -z.orig < $CWD/$NAME-$VERSION-webp.diff || exit 4
+#patch -p1 -b -z.orig < $CWD/$NAME-$VERSION.diff || exit 4
 
 # Configure
 CFLAGS=$SLKCFLAGS \
 CPPFLAGS=$SLKCFLAGS \
 ./configure --build=$ARCH-slackware-linux \
             --host=$ARCH-slackware-linux \
-            --prefix=/usr || exit 5
+            --prefix=/usr \
+            --enable-shared=yes \
+            --enable-static=no || exit 4
 
-# - Enable WebP routines
-sed -i.orig 's/HAVE_LIBTIFF 1/HAVE_LIBTIFF 1\n\n\/* Enable WebP routines *\/\n#define HAVE_LIBWEBP 1/' $SRC/config_auto.h
-
-# Build
+# Build & install
 make -j4 || exit 5
-cd prog; make CFLAGS="$SLKCFLAGS" SHARED=1 LIB_SHARED_DIR=../src -j4 || exit 6; cd ..
-
-# Install
-make DESTDIR=$PKG install || exit 7
-cd prog; make DESTDIR=$PKG install || exit 8; cd ..
-( cd $PKG/usr/lib
-  mv $LIBNAME $LIBNAME.$VER_MAJ.$VER_MIN
-  ln -s $LIBNAME.$VER_MAJ.$VER_MIN $LIBNAME.$VER_MAJ
-  ln -s $LIBNAME.$VER_MAJ.$VER_MIN $LIBNAME )
+make DESTDIR=$PKG install || exit 6
 
 bin_perms $PKG
 ( cd $PKG; strip_bin; strip_lib )
@@ -83,9 +85,9 @@ SBDIR=$PKG/usr/src/slackbuilds/$NAME-$VERSION
 install -m 755 -d $SBDIR
 install -m 644 $CWD/slack-desc               $SBDIR/slack-desc
 install -m 644 $CWD/slack-required           $SBDIR/slack-required
+install -m 644 $CWD/slack-conflicts          $SBDIR/slack-conflicts
 install -m 644 $CWD/README.in                $SBDIR/README.in
-install -m 644 $CWD/$NAME-$VERSION.diff      $SBDIR/$NAME-$VERSION.diff
-install -m 644 $CWD/$NAME-$VERSION-webp.diff $SBDIR/$NAME-$VERSION-webp.diff
+#install -m 644 $CWD/$NAME-$VERSION.diff      $SBDIR/$NAME-$VERSION.diff
 install -m 644 $CWD/$NAME.SlackBuild         $SBDIR/$NAME.SlackBuild
 
 PKGNAME=$NAME-$VERSION-$ARCH-$BUILD$MYIN

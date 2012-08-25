@@ -1,16 +1,16 @@
-leptonlib: leptonlib (An OS lib for efficient image processing and analysis)
-leptonlib:
-leptonlib: Well-tested C library for some basic image processing operations,
-leptonlib: along with a description of the functions and some design methods.
-leptonlib: A full set of affine transformations (translation, shear, rotation,
-leptonlib: scaling) on images of all depths is included, with the exception
-leptonlib: that some of the scaling methods do not work at all depths.  There
-leptonlib: are also implementations of binary morphology, grayscale
-leptonlib: morphology, convolution and rank order filters, and applications
-leptonlib: such as jbig2 image processing and color quantization.
-leptonlib: You will also find basic utilities for the safe and efficient
-leptonlib: handling of arrays (of strings, numbers, number pairs and image-
-leptonlib: related geometrical objects), byte queues, generic stacks, generic
-leptonlib: lists, and endian-independent indexing into 32-bit arrays.
-leptonlib:
-leptonlib: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>
+leptonica: leptonica (An OS lib for efficient image processing and analysis)
+leptonica:
+leptonica: Well-tested C library for some basic image processing operations,
+leptonica: along with a description of the functions and some design methods.
+leptonica: A full set of affine transformations (translation, shear, rotation,
+leptonica: scaling) on images of all depths is included, with the exception
+leptonica: that some of the scaling methods do not work at all depths.  There
+leptonica: are also implementations of binary morphology, grayscale
+leptonica: morphology, convolution and rank order filters, and applications
+leptonica: such as jbig2 image processing and color quantization.
+leptonica: You will also find basic utilities for the safe and efficient
+leptonica: handling of arrays (of strings, numbers, number pairs and image-
+leptonica: related geometrical objects), byte queues, generic stacks, generic
+leptonica: lists, and endian-independent indexing into 32-bit arrays.
+leptonica:
+leptonica: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>

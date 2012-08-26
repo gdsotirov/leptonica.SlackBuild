@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # 
-# $Id: leptonica.SlackBuild,v 1.1 2012/08/25 10:27:08 gsotirov Exp $
+# $Id: leptonica.SlackBuild,v 1.2 2012/08/26 20:55:01 gsotirov Exp $
 #
 
 . ../../slack-package.conf
@@ -62,6 +62,7 @@ CPPFLAGS=$SLKCFLAGS \
 ./configure --build=$ARCH-slackware-linux \
             --host=$ARCH-slackware-linux \
             --prefix=/usr \
+            --libdir=/usr/lib${LIBDIRSUFFIX} \
             --enable-shared=yes \
             --enable-static=no || exit 4
 

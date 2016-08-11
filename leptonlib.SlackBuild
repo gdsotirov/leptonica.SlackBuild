@@ -5,7 +5,7 @@
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
 
-. ../slack-package.conf
+. ../../slack-package.conf
 
 NAME=leptonlib
 LIBNAME=liblept.so
@@ -50,7 +50,8 @@ CFLAGS=$SLKCFLAGS \
 CPPFLAGS=$SLKCFLAGS \
 ./configure --build=$ARCH-slackware-linux \
             --host=$ARCH-slackware-linux \
-            --prefix=/usr || exit 5
+            --prefix=/usr \
+            --libdir=/usr/lib${LIBDIRSUFFIX} || exit 5
 
 # - Enable WebP routines
 sed -i.orig 's/HAVE_LIBTIFF 1/HAVE_LIBTIFF 1\n\n\/* Enable WebP routines *\/\n#define HAVE_LIBWEBP 1/' $SRC/config_auto.h
@@ -62,7 +63,7 @@ cd prog; make CFLAGS="$SLKCFLAGS" SHARED=1 LIB_SHARED_DIR=../src -j4 || exit 6; 
 # Install
 make DESTDIR=$PKG install || exit 7
 cd prog; make DESTDIR=$PKG install || exit 8; cd ..
-( cd $PKG/usr/lib
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
   mv $LIBNAME $LIBNAME.$VER_MAJ.$VER_MIN
   ln -s $LIBNAME.$VER_MAJ.$VER_MIN $LIBNAME.$VER_MAJ
   ln -s $LIBNAME.$VER_MAJ.$VER_MIN $LIBNAME )

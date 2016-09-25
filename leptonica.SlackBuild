@@ -17,14 +17,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # 
-# $Id: leptonica.SlackBuild,v 1.4 2016/09/25 18:56:21 gsotirov Exp $
+# $Id: leptonica.SlackBuild,v 1.5 2016/09/25 20:02:17 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=leptonica
-VERSION=1.72
-ARCH=${ARCH:-i486}
+VERSION=1.73
+ARCH=${ARCH:-i586}
 BUILD=${BUILD:-1}
 
 CWD=${CWD:-`pwd`}

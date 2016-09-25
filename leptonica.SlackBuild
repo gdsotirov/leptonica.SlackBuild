@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Slackware build script for Leptonica
-# Copyright (C) 2010, 2012 Georgi D. Sotirov <gdsotirov@dir.bg>
+# Copyright (C) 2010-2016 Georgi D. Sotirov <gdsotirov@dir.bg>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,13 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 # 
-# $Id: leptonica.SlackBuild,v 1.2 2012/08/26 20:55:01 gsotirov Exp $
+# $Id: leptonica.SlackBuild,v 1.3 2016/09/25 18:42:16 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=leptonica
-VERSION=1.69
+VERSION=1.70
 ARCH=${ARCH:-i486}
 BUILD=${BUILD:-1}
 
@@ -53,9 +53,6 @@ tar -xvf $CWD/$NAME-$VERSION.tar.?z* || exit 3
 cd $SRC
 fix_source
 
-# Apply patches
-#patch -p1 -b -z.orig < $CWD/$NAME-$VERSION.diff || exit 4
-
 # Configure
 CFLAGS=$SLKCFLAGS \
 CPPFLAGS=$SLKCFLAGS \
@@ -67,7 +64,7 @@ CPPFLAGS=$SLKCFLAGS \
             --enable-static=no || exit 4
 
 # Build & install
-make -j4 || exit 5
+make V=1 -j4 || exit 5
 make DESTDIR=$PKG install || exit 6
 
 bin_perms $PKG
@@ -88,7 +85,6 @@ install -m 644 $CWD/slack-desc               $SBDIR/slack-desc
 install -m 644 $CWD/slack-required           $SBDIR/slack-required
 install -m 644 $CWD/slack-conflicts          $SBDIR/slack-conflicts
 install -m 644 $CWD/README.in                $SBDIR/README.in
-#install -m 644 $CWD/$NAME-$VERSION.diff      $SBDIR/$NAME-$VERSION.diff
 install -m 644 $CWD/$NAME.SlackBuild         $SBDIR/$NAME.SlackBuild
 
 PKGNAME=$NAME-$VERSION-$ARCH-$BUILD$MYIN

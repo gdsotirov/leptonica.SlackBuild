@@ -13,4 +13,4 @@ leptonica: handling of arrays (of strings, numbers, number pairs and image-
 leptonica: related geometrical objects), byte queues, generic stacks, generic
 leptonica: lists, and endian-independent indexing into 32-bit arrays.
 leptonica:
-leptonica: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>
+leptonica: Packaged by Georgi D. Sotirov <gdsotirov@gmail.com>
